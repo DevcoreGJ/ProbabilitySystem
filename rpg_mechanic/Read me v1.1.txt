@@ -1,0 +1,31 @@
+﻿Probability system
+
+
+This is a simple example of a chart-based probability system for a roleplaying game that uses Tkinter to create a graphical user interface. It uses a tabbed interface to make it easy to navigate the game.
+
+
+Requirements
+Python 3
+Tkinter library
+Running the code
+To run the code, navigate to the folder where the code is located in your command line or terminal and run the following command:
+
+
+python ProbabilitySystem.py
+
+
+How to use
+The code creates a tabbed interface with a tab called "Player" that contains the probability system
+The probability system has 4 buttons "Attack", "Defend", "Cast Spell" and "Use Skill"
+When you click on one of the buttons, the code will use the probability from the chart and generate a random number to determine the outcome, which will be displayed in the label "Outcome"
+
+
+Customizing the code
+You can change the probabilities for each action in the self.probabilities dictionary
+You can add or remove actions by modifying the create_gui method.
+You can add more functionality to the system as desired.
+You can add more tabs to the interface.
+
+
+Conclusion
+This code can be used as a starting point to create a simple chart-based probability system for a roleplaying game. It can also be used as an example to understand how to create a GUI using Python and Tkinter.
