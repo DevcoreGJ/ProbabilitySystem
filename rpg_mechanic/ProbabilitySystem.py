@@ -21,15 +21,11 @@ class ProbabilitySystem:
     def perform_action(self, action):
         probability = self.probabilities[action]
         roll = random.random()
-        if roll <= probability:
-            outcome = "success"
-        else:
-            outcome = "failure"
-        return outcome
+        return roll <= probability
 
     def display_outcome(self, action):
         outcome = self.perform_action(action)
-        self.outcome_label.config(text=f"Outcome: {outcome}")
+        self.outcome_label.config(text=f"Outcome: {'success' if outcome else 'failure'}")
 
 def main():
     root = tk.Tk()
