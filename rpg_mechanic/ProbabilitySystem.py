@@ -8,77 +8,110 @@ from tkinter import ttk
     and a data table.
 """
 class ProbabilityLogic:
-    def __init__(self, probabilities, data_table):
-        """
-        Initialize the ProbabilityLogic class with the set of probabilities and data table.
-        :param probabilities: A dictionary of actions and their corresponding probabilities of success.
-        :param data_table: A list of possible outcomes for a roll, with "Critical Failure" at index 0,
-                           "Failure x" or "Success x" at indices 1 to 43, and "Critical Success" at index 44.
-        """
-        self.probabilities = probabilities
+    def __init__(self, data_table, probabilities):
         self.data_table = data_table
+        self.probabilities = probabilities
 
     def perform_action(self, action):
-        """
-            Perform the specified action and determine the outcome based on the probability and data table.
-            
-            :param action: The action to perform.
-            :return: A tuple containing a boolean indicating success or failure, and the outcome from the data table.
-        """
-        # Get the probability of success for the selected action
         probability = self.probabilities[action]
-        # Roll a random number between 1 and 44
         roll = random.randint(1, 44)
-        # Get the outcome from the data table using the roll result as the index
-        outcome = self.data_table.table[roll-1]
-        # Determine if the outcome is a success or failure
-        success = outcome[:7] == "Success"
+        success = roll > 22
+        outcome = self.data_table.table[roll]
         return success, outcome
 
+'''
+data_table = DataTable()
+probability_logic = ProbabilityLogic(data_table)
+success, outcome = probability_logic.perform_action()
+print(success, outcome)
+'''
 
 # This class creates the data table used for roll results
 class DataTable:
-    """
-    The DataTable class contains a list of possible outcomes for a roll.
-
-    """
     def __init__(self):
-        """
-        Initialize the DataTable class with a list of possible outcomes.
-        """
-        # Create a list of outcomes with the first element as "Critical Failure", 
-        # the next 42 elements as "Failure x" or "Success x" based on their index, 
-        # and the last element as "Critical Success"
-        self.table = ["Critical Failure"] + [f"{'Failure' if i < 16 else 'Success'} {i}" for i in range(2, 44)] + ["Critical Success"]
+        self.table = {
+            1: "Critical Failure",
+            2: "Apocalyptic Failure",
+            3: "Apocalyptic Failure",
+            4: "Apocalyptic Failure",
+            5: "Catastrophic Failure",
+            6: "Catastrophic Failure",
+            7: "Catastrophic Failure",
+            8: "Calamitous Failure",
+            9: "Calamitous Failure",
+            10: "Calamitous Failure",
+            11: "Distressing Failure",
+            12: "Distressing Failure",
+            13: "Distressing Failure",
+            14: "Rewarding Failure",
+            15: "Rewarding Failure",
+            16: "Rewarding Failure",
+            17: "Barely Success",
+            18: "Barely Success",
+            19: "Barely Success",
+            20: "Unrewarding Success",
+            21: "Unrewarding Success",
+            22: "Unrewarding Success",
+            23: "Rewarding Success",
+            24: "Rewarding Success",
+            25: "Rewarding Success",
+            26: "Comforting Success",
+            27: "Comforting Success",
+            28: "Comforting Success",
+            29: "Advantageous Success",
+            30: "Advantageous Success",
+            31: "Advantageous Success",
+            32: "Strategic Success",
+            33: "Strategic Success",
+            34: "Strategic Success",
+            35: "Prolific Success",
+            36: "Prolific Success",
+            37: "Prolific Success",
+            38: "Salvitic Success",
+            39: "Salvitic Success",
+            40: "Salvitic Success",
+            41: "Miraculous Success",
+            42: "Miraculous Success",
+            43: "Miraculous Success",
+            44: "Critical Success"
+}
 
+class ButtonHandler:
+    def __init__(self, tab, probability_logic, display_outcome):
+        self.probability_logic = probability_logic
+        self.tab = tab
+        self.display_outcome = display_outcome
 
-# This class handles the GUI and displaying of results
-class ProbabilityGUI:
-    """
-    The ProbabilityGUI class contains the graphical user interface for the probability system.
-    """
+    def create_buttons(self):
+        for action in self.probability_logic.probabilities:
+            button = tk.Button(self.tab, text=action.capitalize(), 
+                               command=lambda action=action: self.display_outcome(action))
+            button.pack()
+
+class OutcomeHandler:
     def __init__(self, tab, probability_logic):
         self.probability_logic = probability_logic
         self.tab = tab
-        self.create_gui()
-
-    def create_gui(self):
-        # Create buttons for the different actions
-        for action in self.probability_logic.probabilities:
-            button = tk.Button(self.tab, text=action.capitalize(), command=lambda action=action: self.display_outcome(action))
-            button.pack()
-
-        # Create a label to display the outcome
         self.outcome_label = tk.Label(self.tab)
         self.outcome_label.pack()
 
     def display_outcome(self, action):
-        # Get the success and outcome from the probability logic class
         success, outcome = self.probability_logic.perform_action(action)
-        # Update the outcome label with the outcome and success/failure status
-        self.outcome_label.config(text=f"Outcome: {outcome} ({'Success' if success else 'Failure'})")
-
+        outcome_text = "Outcome: {} ({})".format(outcome, "Success" if success else "Failure")
+        self.outcome_label.config(text=outcome_text)
         
+class ProbabilityGUI:
+    def __init__(self, tab, probability_logic):
+        self.probability_logic = probability_logic
+        self.tab = tab
+        self.create_gui()
+        
+    def create_gui(self):
+        self.outcome_handler = OutcomeHandler(self.tab, self.probability_logic)
+        self.button_handler = ButtonHandler(self.tab, self.probability_logic, self.outcome_handler.display_outcome)
+        self.button_handler.create_buttons()
+    
+
 def main():
     """
 main()
@@ -97,30 +130,31 @@ Finally, it packs the tab control to fill the entire window and starts the main 
     root = tk.Tk()
     root.title("Probability System")
     tab_control = ttk.Notebook(root)
+    player_probabilities = {"attack": 0.8, "defend": 0.6, "cast spell": 0.9, "use skill": 0.7, "heal": 0.4}
+    #player_tab = ttk.Frame(tab_control)
+    #tab_control.add(player_tab, text="Player")
+    player_logic = ProbabilityLogic(DataTable(), player_probabilities)
+    #player_sys = ProbabilityGUI(player_tab, player_logic)
 
-    player_probabilities = {
-    "attack": 0.8,
-    "defend": 0.6,
-    "cast spell": 0.9,
-    "use skill": 0.7
-    }
+    # Create the player and enemy tabs
     player_tab = ttk.Frame(tab_control)
-    tab_control.add(player_tab, text="Player")
-    player_logic = ProbabilityLogic(player_probabilities, DataTable())
-    player_sys = ProbabilityGUI(player_tab, player_logic)
-
-    enemies_probabilities = {
-    "attack": 0.6,
-    "defend": 0.8,
-    "cast spell": 0.7,
-    "use skill": 0.9
-    }
     enemies_tab = ttk.Frame(tab_control)
-    tab_control.add(enemies_tab, text="Enemies")
-    enemies_logic = ProbabilityLogic(enemies_probabilities, DataTable())
+
+    # Add the player and enemy tabs to the tab control
+    tab_control.add(player_tab, text='Player')
+    tab_control.add(enemies_tab, text='Enemy')
+    tab_control.pack(expand=1, fill='both')
+
+    enemies_probabilities = {"attack": 0.6, "defend": 0.4,"cast spell": 0.9, "use skill": 0.7, "heal": 0.2}
+    #enemies_tab = ttk.Frame(tab_control)
+    #tab_control.add(enemies_tab, text="Enemies")
+    enemies_logic = ProbabilityLogic(DataTable(), enemies_probabilities)
+    #enemies_sys = ProbabilityGUI(enemies_tab, enemies_logic)
+
+    player_sys = ProbabilityGUI(player_tab, player_logic)
     enemies_sys = ProbabilityGUI(enemies_tab, enemies_logic)
 
-    tab_control.pack(expand=1, fill='both')
+    #tab_control.pack(expand=1, fill="both")
     root.mainloop()
 
 
