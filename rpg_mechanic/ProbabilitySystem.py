@@ -1,6 +1,8 @@
 import random
 import tkinter as tk
 from tkinter import ttk
+from data_table import DataTable
+from Weather import Weather
 
 class Probability:
     def __init__(self, probabilities):
@@ -12,7 +14,6 @@ class Probability:
         success = roll > 7
         return (roll, success)
 
-
 class ProbabilityCalculator:
     def __init__(self, data_table, probability):
         self.data_table = data_table
@@ -23,7 +24,6 @@ class ProbabilityCalculator:
         outcome = self.data_table.table[roll]
         return (outcome, success)
 
-
 class GameLogic:
     def __init__(self, probabilities, data_table):
         self.data_table = data_table
@@ -32,28 +32,6 @@ class GameLogic:
 
     def perform_action(self, action):
         return self.probability_calculator.perform_action(action)
-        return (outcome, success)
-
-class DataTable:
-    def __init__(self):
-        self.table = {
-            1: "Critical Failure",
-            2: "Apocalyptic Failure",
-            3: "Catastrophic Failure",
-            4: "Calamitous Failure",
-            5: "Distressing Failure",
-            6: "Rewarding Failure",
-            7: "Barely Success",
-            8: "Unrewarding Success",
-            9: "Rewarding Success",
-            10: "Comforting Success",
-            11: "Advantageous Success",
-            12: "Strategic Success",
-            13: "Prolific Success",
-            14: "Salvitic Success",
-            15: "Miraculous Success",
-            16: "Critical Success"
-        }
 
 class ButtonHandler:
     def __init__(self, tab, game_logic, display_outcome):
@@ -91,6 +69,11 @@ class ProbabilityGUI:
         self.button_handler = ButtonHandler(self.tab, self.game_logic, self.outcome_handler.display_outcome)
         self.button_handler.create_buttons()
 
+        # Create the weather selection dropdown
+        self.weather_var = tk.StringVar(value="sunny")
+        self.weather_selector = ttk.Combobox(self.tab, textvariable=self.weather_var, values=["sunny", "rainy", "snowy"])
+        self.weather_selector.pack()
+
 def main():
     root = tk.Tk()
     root.title("Probability System")
@@ -112,7 +95,6 @@ def main():
     tab_control.add(enemy_tab, text="Enemy Tab")
     tab_control.pack()
     root.mainloop()
-
 
 if __name__ == "__main__":
     main()

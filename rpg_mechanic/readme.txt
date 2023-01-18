@@ -29,3 +29,16 @@ Timeline
     2 weeks: Implement additional tabs and front-end features
     2 weeks: Testing and debugging
     2 weeks: Finalizing and polishing the GUI design.
+
+Introduction
+
+This is a simple probability system that simulates the outcome of different actions in a role-playing game. It uses a GUI built with Tkinter and includes a data table that displays the outcome of the action and whether it was a success or failure.
+Changes Made
+
+In this version of the code, a separate class for the probability system has been created and the GameLogic class has been updated to use it. This allows for better maintainability, updateability, and extensibility of the codebase. The ProbabilityCalculator class has also been updated to use the new Probability class. This makes the codebase more readable and easy to understand.
+Usage
+
+To use the system, run the main() function. The GUI will display buttons for different actions (e.g. "attack", "defend", "cast spell"). Pressing one of the buttons will simulate the outcome of the action and display it in the GUI. The outcome is determined by a roll of a virtual 16-sided die and a comparison with the probability of success for that action.
+Note
+
+Please note that the current code is not complete, it is just a part of it. It may contain errors or missing parts that are needed to run the code. You may need to update the code and add missing parts or fix errors before running the code.
