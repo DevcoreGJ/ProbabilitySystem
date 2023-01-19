@@ -1,3 +1,7 @@
+import random
+import tkinter as tk
+from tkinter import ttk
+
 class Weather:
     def __init__(self):
         self.conditions = {
