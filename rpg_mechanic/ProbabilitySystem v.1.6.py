@@ -6,6 +6,7 @@ from Weather import Weather
 from WeatherGUI import WeatherGUI
 from Probability import Probability
 
+'''
 class ProbabilitySystem:
     def __init__(self, data_table, weather, probability):
         self.data_table = data_table
@@ -18,6 +19,26 @@ class ProbabilitySystem:
         success = roll > 7
         outcome = self.data_table.table[roll]
         return (outcome, success, probability)
+'''
+
+class ProbabilitySystem:
+    def __init__(self, data_table, weather, probability):
+        self.data_table = data_table
+        self.weather = weather
+        self.probability = probability
+
+    def perform_action(self, action):
+        print("Action passed to perform_action: ", action)
+        if isinstance(action, tuple):
+            action = action[0]
+            probability = self.probability.get_probability(action)
+        #probability = self.probability.get_probability(action)
+        print("Probability after getting from Probability class: ", probability)
+        roll = random.randint(1, 16)
+        success = roll > probability
+        outcome = self.data_table.table[roll]
+        return (outcome, success, probability)
+
 
 class GameLogic:
     def __init__(self, weather, data_table):
@@ -48,7 +69,8 @@ class OutcomeHandler:
         self.outcome_label.pack()
 
     def display_outcome(self, action):
-        outcome, success, actual_probability = self.game_logic.perform_action(action)
+        outcome, success, probability = self.game_logic.perform_action(action)
+
         outcome_text = "Outcome: {} ({} with a probability of {})".format(outcome, "Success" if success else "Failure", actual_probability)
         self.outcome_label.config(text=outcome_text)
 
@@ -82,7 +104,6 @@ def main():
     weather_tab = ttk.Frame(tab_control)
     
     
-
     tab_control.add(player_tab, text="Player Tab")
     tab_control.add(enemy_tab, text="Enemy Tab")
     tab_control.add(weather_tab, text="Weather Tab")

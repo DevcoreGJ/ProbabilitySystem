@@ -6,7 +6,7 @@ class Probability:
     def __init__(self, probability):
         self.probabilities = probabilities
 
-    def perform_action(self, action):
+    def perform_action(self, probabilities):
         probability = self.probabilities[action]
         roll = random.randint(1, 16)
         success = roll > 7

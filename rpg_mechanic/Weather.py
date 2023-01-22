@@ -5,11 +5,12 @@ from tkinter import ttk
 class Weather:
     def __init__(self):
         self.conditions = {
-            "sunny": {"attack": 0.8, "defend": 0.6, "cast spell": 0.9, "use skill": 0.7, "heal": 0.4},
-            "rainy": {"attack": 0.7, "defend": 0.7, "cast spell": 0.8, "use skill": 0.6, "heal": 0.5},
-            "snowy": {"attack": 0.6, "defend": 0.8, "cast spell": 0.7, "use skill": 0.5, "heal": 0.6},
+            "clear": {"attack": 1, "defend": 1, "cast spell": 1, "use skill": 1, "heal": 1},
+            "sunny": {"attack": 1, "defend": 0.9, "cast spell": 1.1, "use skill": 1, "heal": 0.8},
+            "rainy": {"attack": 0.9, "defend": 1.1, "cast spell": 0.9, "use skill": 0.9, "heal": 1},
+            "snowy": {"attack": 0.8, "defend": 1.2, "cast spell": 0.8, "use skill": 0.8, "heal": 1.1},
         }
-        self.current_condition = "sunny"
+        self.current_condition = "clear"
 
     def set_weather(self, condition):
         if condition in self.conditions:
@@ -19,4 +20,3 @@ class Weather:
 
     def get_probabilities(self):
         return self.conditions[self.current_condition]
-
