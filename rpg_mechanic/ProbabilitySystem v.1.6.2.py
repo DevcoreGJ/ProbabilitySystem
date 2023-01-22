@@ -6,21 +6,25 @@ from Weather import Weather
 from WeatherGUI import WeatherGUI
 from Actions import Actions
 from Probability import Probability
+from OutcomeWeights import OutcomeWeights
 
 class GameLogic:
-    def __init__(self, weather, data_table, probability):
+    def __init__(self, weather, data_table, probability, outcome_weights):
         self.data_table = data_table
         self.weather = weather
         self.probability = probability
+        self.outcome_weights = outcome_weights
 
     def perform_action(self, action):
         probability = self.probability.get_probabilities().get(action)
         weather_modifier = self.weather.get_probabilities().get(action)
         true_prob_multiplier = probability * weather_modifier
         roll = random.randint(1, 16)
+        outcome = self.data_table.table[roll]
+        outcome_weight = self.outcome_weights.get_weight(outcome)
+        true_prob_multiplier *= outcome_weight
         true_roll = roll * true_prob_multiplier
         success = true_roll > 8
-        outcome = self.data_table.table[roll]
         return (outcome, success, true_prob_multiplier)
 
 class ButtonHandler:
@@ -72,10 +76,11 @@ def main():
     # Create the classes
     actions = Actions()
     probability = Probability(actions.get_actions())
-    data_table = DataTable()
+    outcome_weights = OutcomeWeights()
+    data_table = DataTable(outcome_weights)
     weather = Weather()
-    game_logic_player = GameLogic(weather, data_table, probability)
-    game_logic_enemy = GameLogic(weather, data_table, probability)
+    game_logic_player = GameLogic(weather, data_table, probability, outcome_weights)
+    game_logic_enemy = GameLogic(weather, data_table, probability, outcome_weights)
     
     # Create the outcome handlers
     outcome_handler_player = OutcomeHandler(player_tab, game_logic_player)

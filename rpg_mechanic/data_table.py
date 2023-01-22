@@ -2,39 +2,33 @@ import random
 import tkinter as tk
 from tkinter import ttk
 
-class Probability:
-    def __init__(self, probability):
-        self.probabilities = probabilities
-
-    def perform_action(self, probabilities):
-        probability = self.probabilities[action]
-        roll = random.randint(1, 16)
-        success = roll > 7
-        return (roll, success)
-
 class DataTable:
-    def __init__(self):
+    def __init__(self, outcome_weights):
         self.table = {
-            1: "Critical Failure",
-            2: "Apocalyptic Failure",
-            3: "Catastrophic Failure",
-            4: "Calamitous Failure",
-            5: "Distressing Failure",
-            6: "Rewarding Failure",
-            7: "Barely Success",
-            8: "Unrewarding Success",
-            9: "Rewarding Success",
-            10: "Comforting Success",
-            11: "Advantageous Success",
-            12: "Strategic Success",
-            13: "Prolific Success",
-            14: "Salvitic Success",
-            15: "Miraculous Success",
+            1: "Catastrophic Failure",
+            2: "Calamitous Failure",
+            3: "Distressing Failure",
+            4: "Rewarding Failure",
+            5: "Barely Success",
+            6: "Unrewarding Success",
+            7: "Rewarding Success",
+            8: "Comforting Success",
+            9: "Advantageous Success",
+            10: "Strategic Success",
+            11: "Prolific Success",
+            12: "Salvitic Success",
+            13: "Miraculous Success",
+            14: "Critical Success",
+            15: "Critical Failure",
             16: "Critical Success"
         }
+        self.outcome_weights = outcome_weights
 
-class ProbabilityCalculator:
-    def __init__(self, data_table, probability):
-        self.data_table = data_
+    def get_outcome(self, roll):
+        return self.table[roll]
+
+    def get_outcome_weight(self, outcome):
+        return self.outcome_weights.get(outcome, 1)
+
 
 
