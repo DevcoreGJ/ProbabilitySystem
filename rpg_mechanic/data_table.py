@@ -1,7 +1,3 @@
-import random
-import tkinter as tk
-from tkinter import ttk
-
 class DataTable:
     def __init__(self, outcome_weights):
         self.table = {
@@ -23,12 +19,10 @@ class DataTable:
             16: "Critical Success"
         }
         self.outcome_weights = outcome_weights
+        self.default_table = self.table.copy() # Store a copy of the original table to use as the default
+        self.default_outcomes = [outcome for outcome in self.table.values()] # Create a list of the default outcomes for easy reference
 
-    def get_outcome(self, roll):
-        return self.table[roll]
 
-    def get_outcome_weight(self, outcome):
-        return self.outcome_weights.get(outcome, 1)
 
 
 

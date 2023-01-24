@@ -4,11 +4,11 @@ class OutcomeWeights:
             "Critical Failure": 1,
             "Catastrophic Failure": 2,
             "Calamitous Failure": 4,
-            "Distressing Failure": 8,
-            "Rewarding Failure": 16,
-            "Barely Success": 16,
-            "Unrewarding Success": 32,
-            "Rewarding Success": 32,
+            "Distressing Failure": 32,
+            "Rewarding Failure": 32,
+            "Barely Success": 32,
+            "Unrewarding Success": 16,
+            "Rewarding Success": 16,
             "Comforting Success": 16,
             "Advantageous Success": 16,
             "Strategic Success": 16,
@@ -20,3 +20,9 @@ class OutcomeWeights:
 
     def get_weight(self, outcome):
         return self.weights.get(outcome)
+
+    def set_weight(self, outcome):
+        if outcome in self.weights:
+            return self.weights[outcome]
+        else:
+            raise ValueError(f'{outcome} is not a valid outcome')
