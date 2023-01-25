@@ -23,16 +23,16 @@ Considerations
 
 Timeline
 
-    2 weeks: Create the separate classes for probabilities and data table and implement object-oriented principles
-    2 weeks: Create the config file and implement logging
-    2 weeks: Break down the main function and add comments
-    2 weeks: Implement additional tabs and front-end features
-    2 weeks: Testing and debugging
-    2 weeks: Finalizing and polishing the GUI design.
+    2 weeks: Create the separate classes for probabilities and data table and implement object-oriented principles. Done
+    2 weeks: Create the config file and implement logging. Next.
+    2 weeks: Break down the main function and add comments. Ongoing.
+    2 weeks: Implement additional tabs and front-end features Doing.
+    2 weeks: Testing and debugging. Ongoing.
+    2 weeks: Finalizing and polishing the GUI design. Neverending.
 
 Introduction
 
-This is a simple probability system that simulates the outcome of different actions in a role-playing game. It uses a GUI built with Tkinter and includes a data table that displays the outcome of the action and whether it was a success or failure.
+This is a probability system that simulates the outcome of different actions in a role-playing game. It uses a GUI built with Tkinter and includes a data table that displays the outcome of the action and whether it was a success or failure.
 Changes Made
 
 In this version of the code, a separate class for the probability system has been created and the GameLogic class has been updated to use it. This allows for better maintainability, updateability, and extensibility of the codebase. The ProbabilityCalculator class has also been updated to use the new Probability class. This makes the codebase more readable and easy to understand.
