@@ -1,0 +1,5 @@
+Custom presets are now stored in their own folder with a standard naming convention.
+
+The GameLogic class has yet to be changed to handle rolls that are not specifically the datatable. Working on it to get that resolved as quickly as possible.
+
+One minor bug that you almost can't really call a bug occurs when you change the weather you have to repick your preset (Only been tested with defaut in its current state.)

@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 
 class OutcomeCustomizationTab:
     def __init__(self, tab, data_table, outcome_weights, default_outcomes):
@@ -44,6 +45,12 @@ class OutcomeCustomizationTab:
                 self.data_table.table[i] = custom_outcome
                 self.update_outcomes_list()
 
+                # Create a file in the "CustomPresets" folder and save the custom outcomes
+                filename = f"CustomPresets/custom_outcomes_{i}.txt"
+                os.makedirs(os.path.dirname(filename), exist_ok=True)
+                with open(filename, "w") as f:
+                    f.write(custom_outcome)
+                    
     def restore_defaults(self):
         self.data_table.table = self.default_outcomes.copy()
         for i, default_outcome in enumerate(self.default_outcomes):

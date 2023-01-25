@@ -1,3 +1,4 @@
+import os
 import random
 import tkinter as tk
 from tkinter import ttk
@@ -63,6 +64,10 @@ class OutcomeHandler:
         outcome_text = "Outcome: {} ({} with a probability of {})".format(outcome, "Success" if success else "Failure", probability)
         self.outcome_label.config(text=outcome_text)
 
+import os
+import tkinter as tk
+from tkinter import ttk
+
 class ProbabilityGUI:
     def __init__(self, tab, game_logic, actions, outcome_handler):
         self.tab = tab
@@ -74,9 +79,34 @@ class ProbabilityGUI:
         button_frame = tk.Frame(self.tab)
         button_frame.pack()
 
+        # Create the button to load the preset
+        self.preset_var = tk.StringVar()
+        self.preset_selector = ttk.OptionMenu(self.tab, self.preset_var, 'Default')
+        self.populate_presets()
+        self.preset_var.trace("w", self.load_preset)
+        self.preset_selector.pack()
+
+        # Create buttons for actions
         for action in self.actions.get_actions():
             button = tk.Button(button_frame, text=action, command=lambda action=action: outcome_handler.display_outcome(self.game_logic.perform_action(action)))
             button.pack(side=tk.LEFT)
+
+    def populate_presets(self):
+        preset_folder = "CustomPresets"
+        preset_names = [f.split(".")[0] for f in os.listdir(preset_folder) if f.endswith(".txt")]
+        self.preset_selector['menu'].delete(0, 'end')
+        for preset in ['Default'] + preset_names:
+            self.preset_selector['menu'].add_command(label=preset, command=lambda preset=preset: self.preset_var.set(preset))
+
+    def load_preset(self, *args):
+        selected_preset = self.preset_var.get()
+        if selected_preset == "Default":
+            self.game_logic.data_table.table = self.game_logic.data_table.default_outcomes.copy()
+        else:
+            preset_path = f"CustomPresets/{selected_preset}.txt"
+            with open(preset_path, "r") as f:
+                preset_outcomes = f.read().splitlines()
+            self.game_logic.data_table.table = preset_outcomes
 
 def main():
     root = tk.Tk()
@@ -118,8 +148,21 @@ def main():
     enemy_gui = ProbabilityGUI(enemy_tab, game_logic_enemy, actions, outcome_handler_enemy)
     outcome_customization_gui = OutcomeCustomizationTab(outcome_customization_tab, data_table, outcome_weights, data_table.default_outcomes)
 
-    root.mainloop()
+    # Create the preset selector dropdown menu
+    preset_folder = 'CustomPresets'
+    preset_names = [file for file in os.listdir(preset_folder) if file.endswith('.txt')]
+    player_gui.preset_selector.pack()
+    player_gui.preset_var.trace("w", lambda *args: player_gui.load_preset(player_gui.preset_var.get()))
 
+    # Add this code after creating the player_gui object in the main method
+    preset_folder = "CustomPresets"
+    preset_names = [f.split(".")[0] for f in os.listdir(preset_folder) if os.path.isfile(os.path.join(preset_folder, f))]
+    player_gui.preset_selector['menu'].delete(0, 'end')
+    for preset in ['Default'] + preset_names:
+        player_gui.preset_selector['menu'].add_command(label=preset, command=lambda preset=preset: player_gui.preset_var.set(preset))
+    player_gui.load_preset(player_gui.preset_var.get())
+
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
