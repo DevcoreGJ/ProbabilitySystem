@@ -38,19 +38,21 @@ class OutcomeCustomizationTab:
         save_button.pack()
 
     def save_custom_outcomes(self):
+        custom_outcomes_list = []
         for i, entry in self.custom_outcomes.items():
             custom_outcome = entry.get()
             if custom_outcome and custom_outcome.strip():
                 self.custom_outcomes_dict[i] = custom_outcome # Add the custom outcome to the dict
                 self.data_table.table[i] = custom_outcome
                 self.update_outcomes_list()
+                custom_outcomes_list.append(custom_outcome)
 
-                # Create a file in the "CustomPresets" folder and save the custom outcomes
-                filename = f"CustomPresets/custom_outcomes_{i}.txt"
-                os.makedirs(os.path.dirname(filename), exist_ok=True)
-                with open(filename, "w") as f:
-                    f.write(custom_outcome)
-                    
+        # Create a file in the "CustomPresets" folder and save the custom outcomes
+        filename = "CustomPresets/custom_outcomes.txt"
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "w") as f:
+            f.write("\n".join(custom_outcomes_list))
+
     def restore_defaults(self):
         self.data_table.table = self.default_outcomes.copy()
         for i, default_outcome in enumerate(self.default_outcomes):

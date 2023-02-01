@@ -17,17 +17,23 @@ class GameLogic:
         self.probability = probability
         self.outcome_weights = outcome_weights
 
-    def perform_action(self, action):
+    def perform_action(self, action, custom_outcomes=None):
         """
         Perform the given action, and return the outcome, success status, and true probability multiplier.
         :param action: The action to be performed.
+        :param custom_outcomes: (Optional) A dictionary of custom outcomes to use for the action.
         :return: Tuple of outcome, success status, and true probability multiplier.
         """
         probability = self.probability.get_probabilities().get(action)
         weather_modifier = self.weather.get_probabilities().get(action)
         true_prob_multiplier = probability * weather_modifier
         roll = random.randint(1, 16)
-        outcome = self.data_table.table[roll]
+
+        if custom_outcomes:
+            outcome = custom_outcomes.get(roll, self.data_table.table[roll])
+        else:
+            outcome = self.data_table.table[roll]
+
         outcome_weight = self.outcome_weights.get_weight(outcome)
         true_prob_multiplier *= outcome_weight
         true_roll = roll * true_prob_multiplier
@@ -134,10 +140,10 @@ def main():
     outcome_handler_enemy = OutcomeHandler(enemy_tab, game_logic_enemy)
 
     # Add the tabs to the tab control and pack it
-    tab_control.add(player_tab, text="Player Tab")
-    tab_control.add(enemy_tab, text="Enemy Tab")
-    tab_control.add(weather_tab, text="Weather Tab")
-    tab_control.add(outcome_customization_tab, text="Outcome Customization Tab")
+    tab_control.add(player_tab, text="Player Roll")
+    tab_control.add(enemy_tab, text="Enemy Roll")
+    tab_control.add(weather_tab, text="Weather Roll Modifier")
+    tab_control.add(outcome_customization_tab, text="Custom Roll Presets")
     tab_control.pack()
 
     # Create the weather GUI
